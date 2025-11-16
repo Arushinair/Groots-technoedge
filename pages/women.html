@@ -1,0 +1,345 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Women - Groots</title><link rel="stylesheet" href="../css/style.css"></head><body>
+<header class="header"><div class="container wrap"><div class="brand">Groots Technoedge</div><nav class="nav"><a href="../index.html">Home</a><a href="collections.html">Collections</a><a href="women.html">Women</a><a href="men.html">Men</a><a href="about.html">About</a><a href="contact.html" class="cta">Contact</a></nav></div></header>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Women - Groots</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Page-specific layout for Collections (women) */
+    .collections-layout { display: grid; grid-template-columns: 300px 1fr; gap: 28px; align-items: start; margin-bottom: 60px; }
+    .filters { position: sticky; top: 20px; height: calc(100vh - 40px); overflow-y: auto; background: #fff; border-radius: 10px; padding: 18px; border: 1px solid #eee; box-shadow: 0 8px 30px rgba(15,23,42,0.03); }
+    .product-grid .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .card.product-card { display:flex; flex-direction:column; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 6px 20px rgba(15,23,42,0.04); min-height: 600px; }
+    .card.product-card .media { flex: 1 1 auto; min-height: 420px; background:#f7f7f7; }
+    .card.product-card .media img { width:100%; height:100%; object-fit:cover; display:block; }
+    .card.product-card .card-content { padding: 22px; display:flex; align-items:flex-end; }
+    .card.product-card .meta { width:100%; }
+    .card .title { font-weight:700; font-size:16px; margin-bottom:8px; color:#111827; }
+    .card .price { color:#6b7280; font-weight:700; }
+
+    /* filters helper styles */
+    .filters-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .link-btn{background:none;border:none;color:#e85b5b;cursor:pointer;font-weight:600}
+    .filter-block{border-top:1px solid #f3f3f3;padding:10px 0}
+    .filter-title{display:block;font-weight:700;margin-bottom:8px;color:#111827}
+    .price-range input[type="range"]{width:100%;margin:6px 0}
+    .price-inputs{display:flex;gap:8px;margin-top:6px;align-items:center}
+    .price-inputs input[type="number"]{width:50%;padding:8px;border:1px solid #e6e6e6;border-radius:6px}
+    .apply-btn{background:#e63946;color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer}
+    .collapser{width:100%;text-align:left;background:none;border:none;padding:8px 0;font-weight:700;display:flex;justify-content:space-between;align-items:center;cursor:pointer;color:#111}
+    .filter-body{display:none;padding-top:8px}
+    .filter-block.open .filter-body{display:block}
+
+    @media (max-width:1100px) { .collections-layout { grid-template-columns: 260px 1fr; gap:20px; } .product-grid .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width:720px) { .collections-layout { grid-template-columns: 1fr; } .filters { position: static; height:auto; width:100%; } .product-grid .grid { grid-template-columns: 1fr; } .card.product-card { min-height: 520px; } }
+
+    /* quick view modal */
+    .qv-overlay{position:fixed;inset:0;background:rgba(0,0,0,.42);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+    .qv-overlay.open{display:flex}
+    .qv-modal{background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.2);max-width:820px;width:100%;display:grid;grid-template-columns: 360px 1fr;overflow:hidden}
+    .qv-media{background:#f7f7f7;display:flex;align-items:center;justify-content:center}
+    .qv-media img{width:100%;height:100%;object-fit:cover;display:block}
+    .qv-body{padding:20px;position:relative}
+    .qv-title{font-size:20px;font-weight:700;margin-bottom:6px}
+    .qv-price{color:#6b7280;font-weight:700;margin-bottom:14px}
+    .qv-actions{display:flex;gap:10px;margin-top:10px}
+    .qv-close{position:absolute;top:10px;right:10px;border:none;background:#f3f4f6;border-radius:8px;padding:6px 10px;cursor:pointer}
+    @media (max-width:720px){.qv-modal{grid-template-columns:1fr;max-width:480px}}
+  </style>
+</head>
+
+  <main class="container">
+    <h1 style="margin-top:18px; margin-bottom:18px;">Women — Trending Now</h1>
+
+    <div class="collections-layout">
+      <!-- FILTER SIDEBAR -->
+      <aside class="filters" id="filters">
+        <div class="filters-header">
+          <strong>FILTERS</strong>
+          <button id="clear-all" class="link-btn">Clear all</button>
+        </div>
+
+        <div class="filter-block">
+          <label class="filter-title">Price</label>
+          <div class="price-range">
+            <input type="range" id="price-min" min="0" max="20000" step="50" value="0">
+            <input type="range" id="price-max" min="0" max="20000" step="50" value="20000">
+            <div class="price-inputs">
+              <input type="number" id="price-min-input" placeholder="Minimum" value="0">
+              <input type="number" id="price-max-input" placeholder="Maximum" value="20000">
+              <button id="price-apply" class="apply-btn">→</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-block collapsible">
+          <button class="collapser"><span>Size</span><span class="chev">+</span></button>
+          <div class="filter-body">
+            <label><input type="checkbox" name="size" value="XS"> XS</label>
+            <label><input type="checkbox" name="size" value="S"> S</label>
+            <label><input type="checkbox" name="size" value="M"> M</label>
+            <label><input type="checkbox" name="size" value="L"> L</label>
+          </div>
+        </div>
+
+        <div class="filter-block collapsible">
+          <button class="collapser"><span>Color</span><span class="chev">+</span></button>
+          <div class="filter-body">
+            <label><input type="checkbox" name="color" value="black"> Black</label>
+            <label><input type="checkbox" name="color" value="white"> White</label>
+            <label><input type="checkbox" name="color" value="blue"> Blue</label>
+          </div>
+        </div>
+
+        <div class="filter-block collapsible">
+          <button class="collapser"><span>Brand</span><span class="chev">+</span></button>
+          <div class="filter-body">
+            <label><input type="checkbox" name="brand" value="groots"> Groots</label>
+            <label><input type="checkbox" name="brand" value="westside"> Westside</label>
+            <label><input type="checkbox" name="brand" value="zara"> Zara</label>
+            <label><input type="checkbox" name="brand" value="hm"> H&amp;M</label>
+            <label><input type="checkbox" name="brand" value="uniqlo"> Uniqlo</label>
+          </div>
+        </div>
+
+        <div style="margin-top:18px">
+          <button id="apply-filters" class="apply-btn" style="width:100%">Apply Filters</button>
+        </div>
+      </aside>
+
+      <!-- PRODUCTS GRID -->
+      <section class="product-grid">
+        <div class="grid">
+          <!-- Product card 1 -->
+          <article class="card" data-size="S" data-color="grey" data-brand="zara" data-price="1500">
+            <a href="product.html?pid=13" style="display:block">
+              <img src="/pages/Sleeveless_hoodie.jpeg" alt="Sleeveless Hoodie">
+              <div class="body">
+                <div class="title">Sleeveless Hoodie</div>
+                <div class="price">MRP ₹1500</div>
+                <div class="small">Size: S</div>
+              </div>
+            </a>
+            <div style="padding:10px; display:flex; gap:8px">
+              <a href="product.html?pid=13" style="margin-left:auto; padding:8px 10px; background:var(--primary); color:#fff; border-radius:8px">View</a>
+            </div>
+          </article>
+
+          <!-- Product card 2 -->
+          <article class="card" data-size="M" data-color="blue" data-brand="groots" data-price="1500">
+            <a href="product.html?pid=1" style="display:block">
+              <img src="/pages/womens_Boxy_fit_jacket .webp" alt="Boxy fit jacket">
+              <div class="body">
+                <div class="title">Women Boxy Fit Jacket</div>
+                <div class="price">MRP ₹1400</div>
+                <div class="small">Size: M</div>
+              </div>
+            </a>
+            <div style="padding:10px; display:flex; gap:8px">
+              <a href="product.html?pid=1" style="margin-left:auto; padding:8px 10px; background:var(--primary); color:#fff; border-radius:8px">View</a>
+            </div>
+          </article>
+
+          <!-- Product card 3 -->
+          <article class="card" data-size="L" data-color="white" data-brand="westside" data-price="1500">
+            <a href="product.html?pid=2" style="display:block">
+              <img src="/pages/Tshirts_for_women.jpg" alt="Tshirts for women">
+              <div class="body">
+                <div class="title">Tshirts for Women</div>
+                <div class="price">MRP ₹500</div>
+                <div class="small">Size: L</div>
+              </div>
+            </a>
+            <div style="padding:10px; display:flex; gap:8px">
+              <a href="product.html?pid=2" style="margin-left:auto; padding:8px 10px; background:var(--primary); color:#fff; border-radius:8px">View</a>
+            </div>
+          </article>
+
+          <!-- add more cards as needed -->
+          <article class="card" data-size="XL" data-color="beige" data-brand="hm" data-price="1500">
+            <a href="product.html?pid=4" style="display:block">
+              <img src="/pages/Standard _ength_checked_jacket.jpg" alt="Standard Length Checked Jacket">
+              <div class="body">
+                <div class="title">Standard Length Checked Jacket</div>
+                <div class="price">MRP ₹1400</div>
+                <div class="small">Size: XL</div>
+              </div>
+            </a>
+            <div style="padding:10px; display:flex; gap:8px">
+              <a href="product.html?pid=4" style="margin-left:auto; padding:8px 10px; background:var(--primary); color:#fff; border-radius:8px">View</a>
+            </div>
+          </article>
+
+          <article class="card" data-size="M" data-color="blue" data-brand="uniqlo" data-price="1500">
+            <a href="product.html?pid=7" style="display:block">
+              <img src="/pages/back printed women blue.webp" alt="Back printed women blue">
+              <div class="body">
+                <div class="title">back printed women blue</div>
+                <div class="price">MRP ₹600</div>
+                <div class="small">Size: M</div>
+              </div>
+            </a>
+            <div style="padding:10px; display:flex; gap:8px">
+              <a href="product.html?pid=7" style="margin-left:auto; padding:8px 10px; background:var(--primary); color:#fff; border-radius:8px">View</a>
+            </div>
+          </article>
+
+          <article class="card" data-size="S" data-color="red" data-brand="zara" data-price="1500">
+            <a href="product.html?pid=14" style="display:block">
+              <img src="/pages/Georgette fit and flare casual gown.jpeg" alt="Georgette fit and flare casual gown">
+              <div class="body">
+                <div class="title">Georgette fit and flare casual gown</div>
+                <div class="price">MRP ₹800</div>
+                <div class="small">Size: S</div>
+              </div>
+            </a>
+            <div style="padding:10px; display:flex; gap:8px">
+              <a href="product.html?pid=14" style="margin-left:auto; padding:8px 10px; background:var(--primary); color:#fff; border-radius:8px">View</a>
+            </div>
+          </article>
+
+          <article class="card" data-size="L" data-color="pink" data-brand="westside" data-price="1500">
+            <a href="product.html?pid=15" style="display:block">
+              <img src="/pages/3 peice set.jpeg" alt="3 peice set">
+              <div class="body">
+                <div class="title">3 peice set</div>
+                <div class="price">MRP ₹1000</div>
+                <div class="small">Size: L</div>
+              </div>
+            </a>
+            <div style="padding:10px; display:flex; gap:8px">
+              <a href="product.html?pid=15" style="margin-left:auto; padding:8px 10px; background:var(--primary); color:#fff; border-radius:8px">View</a>
+            </div>
+          </article>
+
+          <article class="card" data-size="XL" data-color="green" data-brand="groots" data-price="1500">
+            <a href="product.html?pid=16" style="display:block">
+              <img src="/pages/Masakali suit set.jpeg" alt="Masakali suit set">
+              <div class="body">
+                <div class="title">Masakali suit set</div>
+                <div class="price">MRP ₹1100</div>
+                <div class="small">Size: XL</div>
+              </div>
+            </a>
+            <div style="padding:10px; display:flex; gap:8px">
+              <a href="product.html?pid=16" style="margin-left:auto; padding:8px 10px; background:var(--primary); color:#fff; border-radius:8px">View</a>
+            </div>
+          </article>
+
+          <article class="card" data-size="M" data-color="pink" data-brand="hm" data-price="1500">
+            <a href="product.html?pid=17" style="display:block">
+              <img src="/pages/Pink skirt set.jpeg" alt="Pink skirt set">
+              <div class="body">
+                <div class="title">Pink skirt set</div>
+                <div class="price">MRP ₹1200</div>
+                <div class="small">Size: M</div>
+              </div>
+            </a>
+            <div style="padding:10px; display:flex; gap:8px">
+              <a href="product.html?pid=17" style="margin-left:auto; padding:8px 10px; background:var(--primary); color:#fff; border-radius:8px">View</a>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div class="qv-overlay" id="qv">
+    <div class="qv-modal" role="dialog" aria-modal="true" aria-labelledby="qv-title">
+      <div class="qv-media"><img id="qv-img" src="" alt=""></div>
+      <div class="qv-body">
+        <button class="qv-close" id="qv-close" aria-label="Close">✕</button>
+        <div class="qv-title" id="qv-title">Product</div>
+        <div class="qv-price" id="qv-price">MRP</div>
+        <div class="qv-actions">
+          <a id="qv-view" href="#" style="padding:8px 12px;background:var(--primary);color:#fff;border-radius:8px">Go to product</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container inner">
+      <div><strong>Groots Pvt. Ltd.</strong><div class="small">info@groots.co</div></div>
+      <div class="small">© 2025 Groots</div>
+    </div>
+  </footer>
+
+  <script>
+    // collapsible & basic filter UI wiring
+    document.addEventListener('DOMContentLoaded', ()=> {
+      document.querySelectorAll('.collapser').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const parent = btn.closest('.filter-block');
+          parent.classList.toggle('open');
+          btn.querySelector('.chev').textContent = parent.classList.contains('open') ? '–' : '+';
+        });
+      });
+
+      const pMin = document.getElementById('price-min');
+      const pMax = document.getElementById('price-max');
+      const pMinInput = document.getElementById('price-min-input');
+      const pMaxInput = document.getElementById('price-max-input');
+      function syncPrice(){ pMinInput.value = pMin.value; pMaxInput.value = pMax.value; }
+      pMin && pMin.addEventListener('input', syncPrice); pMax && pMax.addEventListener('input', syncPrice);
+
+      document.getElementById('apply-filters').addEventListener('click', ()=> {
+        const minP = Number(pMin.value || 0);
+        const maxP = Number(pMax.value || 999999);
+        const selectedSizes = Array.from(document.querySelectorAll('input[name="size"]:checked')).map(i=>i.value.toLowerCase());
+        const selectedColors = Array.from(document.querySelectorAll('input[name="color"]:checked')).map(i=>i.value.toLowerCase());
+        const selectedBrands = Array.from(document.querySelectorAll('input[name="brand"]:checked')).map(i=>i.value.toLowerCase());
+        document.querySelectorAll('.product-grid .card').forEach(card=>{
+          const price = Number(card.dataset.price || 0);
+          const sizeOk = selectedSizes.length ? selectedSizes.includes((card.dataset.size||'').toLowerCase()) : true;
+          const colorOk = selectedColors.length ? selectedColors.includes((card.dataset.color||'').toLowerCase()) : true;
+          const brandOk = selectedBrands.length ? selectedBrands.includes((card.dataset.brand||'').toLowerCase()) : true;
+          const priceOk = price >= minP && price <= maxP;
+          card.style.display = (sizeOk && colorOk && brandOk && priceOk) ? '' : 'none';
+        });
+      });
+
+      document.getElementById('clear-all').addEventListener('click', ()=>{
+        document.querySelectorAll('#filters input[type="checkbox"]').forEach(ch => ch.checked = false);
+        pMin.value = 0; pMax.value = 20000; syncPrice();
+        document.querySelectorAll('.product-grid .card').forEach(c=>c.style.display='');
+      });
+
+      // Women Quick View same as Men
+      const overlay = document.getElementById('qv');
+      const qvImg = document.getElementById('qv-img');
+      const qvTitle = document.getElementById('qv-title');
+      const qvPrice = document.getElementById('qv-price');
+      const qvView = document.getElementById('qv-view');
+      const qvClose = document.getElementById('qv-close');
+
+      function openQV(fromCard, href){
+        const title = fromCard.querySelector('.title')?.textContent?.trim() || 'Product';
+        const price = fromCard.querySelector('.price')?.textContent?.trim() || '';
+        const img = fromCard.querySelector('img')?.getAttribute('src') || '';
+        qvTitle.textContent = title;
+        qvPrice.textContent = price;
+        qvImg.src = img;
+        qvImg.alt = title;
+        qvView.href = href || '#';
+        overlay.classList.add('open');
+      }
+      function closeQV(){ overlay.classList.remove('open'); }
+      qvClose?.addEventListener('click', closeQV);
+      overlay?.addEventListener('click', (e)=>{ if(e.target === overlay) closeQV(); });
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeQV(); });
+
+      document.querySelectorAll('.product-grid .card').forEach(card=>{
+        const actions = card.querySelector('div[style*="display:flex"]');
+        const viewLink = actions ? actions.querySelector('a[href*="product.html"]') : null;
+        viewLink && viewLink.addEventListener('click', (e)=>{
+          e.preventDefault();
+          openQV(card, viewLink.getAttribute('href'));
+        });
+      });
+    });
+  </script>
+</body>
+</html>

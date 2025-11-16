@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Product - Groots</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container wrap">
+      <div class="brand">Groots Technoedge</div>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="collections.html">Collections</a>
+        <a href="women.html">Women</a>
+        <a href="men.html">Men</a>
+        <a href="about.html">About</a>
+        <a href="contact.html" class="cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="product-detail">
+      <div class="gallery">
+        <img id="main-image" src="./womens_Boxy_fit_jacket .webp" alt="Product">
+      </div>
+      <div class="prod-info">
+        <h2 id="prod-title">Product Title</h2>
+        <div class="small" id="prod-price">MRP ₹0</div>
+        <p class="small" style="margin-top:12px">Detailed description goes here. Replace with actual product copy.</p>
+        <div style="margin-top:12px">
+          <label for="size">Size</label>
+          <select id="size"><option>S</option><option>M</option><option>L</option></select>
+        </div>
+        <div style="margin-top:12px">
+          <button style="padding:10px 14px; background:var(--accent); color:#fff; border-radius:8px">Add to Bag</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="container inner">
+      <div><strong>Groots Pvt. Ltd.</strong><div class="small">info@groots.co</div></div>
+      <div class="small">© 2025 Groots</div>
+    </div>
+  </footer>
+  <script src="../js/main.js"></script>
+  <script>
+    // Product catalog mapping to real images/titles used across the site
+    const PRODUCTS = {
+      1: { title: 'Womens Boxy Fit Jacket', price: 1250, img: 'womens_Boxy_fit_jacket .webp' },
+      2: { title: "Women's white printed Tshirts", price: 1500, img: 'Tshirts_for_women.jpg' },
+      3: { title: 'Teal tshirt for men', price: 1750, img: 'teal_tshirts_men.webp' },
+      4: { title: 'Standard length womens checked jacket', price: 2000, img: 'Standard _ength_checked_jacket.jpg' },
+      5: { title: 'Oversized tshirts for men', price: 2250, img: 'Oversized_Tshirts_for_men.webp' },
+      6: { title: 'Cargo Jacket for womens', price: 2500, img: 'Cargo jacket lightweight.jpg' },
+      7: { title: 'Back printed women blue tshirt', price: 2750, img: 'back printed women blue.webp' },
+      8: { title: 'Vintage mens Baggy jeans', price: 3000, img: 'Vintage men baggy jeans.jpeg' },
+      9: { title: 'Luxury Formal Shirt', price: 3000, img: 'Luxury Formal Shirt.jpg' },
+      10: { title: "Men's Crimson red & midnight black", price: 3200, img: "Men's Crimson red & midnight black.webp" },
+      11: { title: "Men's black and navy blue shirt", price: 3400, img: "Men's black and navy blue shirt.webp" },
+      12: { title: 'Black and white lined shirt', price: 3600, img: 'Black and white lined shirt.webp' },
+      13: { title: 'Sleeveless Hoodie', price: 1500, img: 'Sleeveless_hoodie.jpeg' },
+      14: { title: 'Georgette fit and flare casual gown', price: 1500, img: 'Georgette fit and flare casual gown.jpeg' },
+      15: { title: '3 peice set', price: 1500, img: '3 peice set.jpeg' },
+      16: { title: 'Masakali suit set', price: 1500, img: 'Masakali suit set.jpeg' },
+      17: { title: 'Pink skirt set', price: 1500, img: 'Pink skirt set.jpeg' },
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const pid = parseInt(params.get('pid') || '1', 10);
+    const p = PRODUCTS[pid] || PRODUCTS[1];
+
+    const imgEl = document.getElementById('main-image');
+    imgEl.src = './' + p.img;
+    imgEl.alt = p.title;
+    document.getElementById('prod-title').textContent = p.title;
+    document.getElementById('prod-price').textContent = 'MRP ₹' + p.price;
+  </script>
+</body>
+</html>
