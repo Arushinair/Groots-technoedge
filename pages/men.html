@@ -65,11 +65,11 @@
             <div class="filter-block">
               <label class="filter-title">Price</label>
               <div class="price-range">
-                <input type="range" id="price-min" min="0" max="20000" step="50" value="0">
-                <input type="range" id="price-max" min="0" max="20000" step="50" value="20000">
+                <input type="range" id="price-min" min="0" max="2000" step="50" value="0">
+                <input type="range" id="price-max" min="0" max="2000" step="50" value="2000">
                 <div class="price-inputs">
-                  <input type="number" id="price-min-input" placeholder="Minimum" value="0">
-                  <input type="number" id="price-max-input" placeholder="Maximum" value="20000">
+                  <input type="number" id="price-min-input" placeholder="Minimum" value="0" min="0" max="2000">
+                  <input type="number" id="price-max-input" placeholder="Maximum" value="2000" min="0" max="2000">
                   <button id="price-apply" class="apply-btn">→</button>
                 </div>
               </div>
@@ -248,9 +248,43 @@
       </div>
     
       <footer class="footer">
-        <div class="container inner">
-          <div><strong>Groots Pvt. Ltd.</strong><div class="small">info@groots.co</div></div>
-          <div class="small">© 2025 Groots</div>
+        <div class="inner">
+          <div class="footer-grid">
+            <div class="footer-col">
+              <h3>Company</h3>
+              <ul>
+                <li><a href="about.html">Our Team</a></li>
+                <li><a href="privacy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms & Conditions</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h3>Policies</h3>
+              <ul>
+                <li><a href="refund.html">Refund Policy</a></li>
+                <li><a href="shipping.html">Shipping Policy</a></li>
+                <li><a href="disclaimer.html">Disclaimer Policy</a></li>
+                <li><a href="grievance.html">Grievance Policy</a></li>
+                <li><a href="vendor.html">Seller Policy</a></li>
+                <li><a href="cookie.html">Cookie Policy</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h3>Products</h3>
+              <ul>
+                <li><a href="women.html">Women's Apparel</a></li>
+                <li><a href="men.html">Men's Apparel</a></li>
+                <li><a href="collections.html">New Arrivals</a></li>
+                <li><a href="collections.html">Sale Items</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <div class="footer-copyright">
+              Copyright © 2025 <strong>Groots Technoedge Pvt. Ltd.</strong> All rights reserved.
+            </div>
+          </div>
         </div>
       </footer>
     
@@ -269,17 +303,34 @@
           const pMax = document.getElementById('price-max');
           const pMinInput = document.getElementById('price-min-input');
           const pMaxInput = document.getElementById('price-max-input');
-          function syncPrice(){ pMinInput.value = pMin.value; pMaxInput.value = pMax.value; }
-          pMin && pMin.addEventListener('input', syncPrice); pMax && pMax.addEventListener('input', syncPrice);
+          
+          function syncPriceFromSlider(){ 
+            if(pMinInput) pMinInput.value = pMin.value; 
+            if(pMaxInput) pMaxInput.value = pMax.value; 
+          }
+          function syncPriceFromInput(){
+            const minVal = Math.max(0, Math.min(2000, Number(pMinInput.value) || 0));
+            const maxVal = Math.max(0, Math.min(2000, Number(pMaxInput.value) || 2000));
+            pMin.value = minVal;
+            pMax.value = maxVal;
+          }
+          
+          pMin && pMin.addEventListener('input', syncPriceFromSlider); 
+          pMax && pMax.addEventListener('input', syncPriceFromSlider);
+          pMinInput && pMinInput.addEventListener('input', syncPriceFromInput);
+          pMaxInput && pMaxInput.addEventListener('input', syncPriceFromInput);
     
           document.getElementById('apply-filters').addEventListener('click', ()=> {
-            const minP = Number(pMin.value || 0);
-            const maxP = Number(pMax.value || 999999);
+            const minP = Number(pMinInput?.value || pMin?.value || 0);
+            const maxP = Number(pMaxInput?.value || pMax?.value || 2000);
             const selectedSizes = Array.from(document.querySelectorAll('input[name="size"]:checked')).map(i=>i.value.toLowerCase());
             const selectedColors = Array.from(document.querySelectorAll('input[name="color"]:checked')).map(i=>i.value.toLowerCase());
             const selectedBrands = Array.from(document.querySelectorAll('input[name="brand"]:checked')).map(i=>i.value.toLowerCase());
             document.querySelectorAll('.product-grid .card').forEach(card=>{
-              const price = Number(card.dataset.price || 0);
+              // Extract price from displayed text (e.g., "MRP ₹1000" -> 1000)
+              const priceText = card.querySelector('.price')?.textContent || '';
+              const priceMatch = priceText.match(/₹\s*(\d+)/);
+              const price = priceMatch ? Number(priceMatch[1]) : (Number(card.dataset.price) || 0);
               const sizeOk = selectedSizes.length ? selectedSizes.includes((card.dataset.size||'').toLowerCase()) : true;
               const colorOk = selectedColors.length ? selectedColors.includes((card.dataset.color||'').toLowerCase()) : true;
               const brandOk = selectedBrands.length ? selectedBrands.includes((card.dataset.brand||'').toLowerCase()) : true;
@@ -290,7 +341,9 @@
     
           document.getElementById('clear-all').addEventListener('click', ()=>{
             document.querySelectorAll('#filters input[type="checkbox"]').forEach(ch => ch.checked = false);
-            pMin.value = 0; pMax.value = 20000; syncPrice();
+            pMin.value = 0; pMax.value = 2000; 
+            if(pMinInput) pMinInput.value = 0;
+            if(pMaxInput) pMaxInput.value = 2000;
             document.querySelectorAll('.product-grid .card').forEach(c=>c.style.display='');
           });
 
