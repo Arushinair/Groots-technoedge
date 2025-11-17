@@ -28,6 +28,10 @@
         <a href="women.html">Women</a>
         <a href="men.html">Men</a>
         <a href="about.html">About</a>
+        <a href="cart.html" style="position:relative;">
+          Cart
+          <span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:var(--accent); color:#fff; border-radius:50%; width:20px; height:20px; display:none; align-items:center; justify-content:center; font-size:11px; font-weight:700;"></span>
+        </a>
         <a href="contact.html" class="cta">Contact</a>
       </nav>
     </div>
@@ -183,6 +187,23 @@
       </div>
     </div>
   </footer>
+  <script>
+    // Update cart count in header
+    function updateCartCount() {
+      const cart = localStorage.getItem('groots_cart');
+      const count = cart ? JSON.parse(cart).reduce((sum, item) => sum + item.quantity, 0) : 0;
+      const cartCountEl = document.getElementById('cart-count');
+      if (cartCountEl) {
+        if (count > 0) {
+          cartCountEl.textContent = count;
+          cartCountEl.style.display = 'flex';
+        } else {
+          cartCountEl.style.display = 'none';
+        }
+      }
+    }
+    updateCartCount();
+  </script>
 </body>
 </html>
 

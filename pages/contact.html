@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Contact - Groots</title><link rel="stylesheet" href="../css/style.css"></head><body>
-<header class="header"><div class="container wrap"><div class="brand">Groots Technoedge</div><nav class="nav"><a href="../index.html">Home</a><a href="collections.html">Collections</a><a href="women.html">Women</a><a href="men.html">Men</a><a href="about.html">About</a><a href="contact.html" class="cta">Contact</a></nav></div></header>
+<header class="header"><div class="container wrap"><div class="brand">Groots Technoedge</div><nav class="nav"><a href="../index.html">Home</a><a href="collections.html">Collections</a><a href="women.html">Women</a><a href="men.html">Men</a><a href="about.html">About</a><a href="cart.html" style="position:relative;">Cart<span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:var(--accent); color:#fff; border-radius:50%; width:20px; height:20px; display:none; align-items:center; justify-content:center; font-size:11px; font-weight:700;"></span></a><a href="contact.html" class="cta">Contact</a></nav></div></header>
 <main class="container"><h1>Contact Us</h1>
 <p class="small">For wholesale and media inquiries: info@groots.co</p>
 <form style="max-width:700px; margin-top:12px">
@@ -48,4 +48,22 @@
         </div>
       </div>
     </div>
-  </footer><script src="../js/main.js"></script></body></html>
+  </footer><script src="../js/main.js"></script>
+  <script>
+    // Update cart count in header
+    function updateCartCount() {
+      const cart = localStorage.getItem('groots_cart');
+      const count = cart ? JSON.parse(cart).reduce((sum, item) => sum + item.quantity, 0) : 0;
+      const cartCountEl = document.getElementById('cart-count');
+      if (cartCountEl) {
+        if (count > 0) {
+          cartCountEl.textContent = count;
+          cartCountEl.style.display = 'flex';
+        } else {
+          cartCountEl.style.display = 'none';
+        }
+      }
+    }
+    updateCartCount();
+  </script>
+</body></html>

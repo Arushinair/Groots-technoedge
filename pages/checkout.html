@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Checkout - Groots</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .checkout-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 40px;
+      margin-top: 20px;
+    }
+    .checkout-section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-bottom: 24px;
+    }
+    .checkout-section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #111827;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #374151;
+      font-size: 14px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.1);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .payment-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .payment-option {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .payment-option:hover {
+      border-color: var(--primary);
+      background: #f9fafb;
+    }
+    .payment-option input[type="radio"] {
+      width: auto;
+      margin-right: 12px;
+    }
+    .payment-option label {
+      margin: 0;
+      cursor: pointer;
+      flex: 1;
+    }
+    .order-summary {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+    .order-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .order-item:last-child {
+      border-bottom: none;
+    }
+    .order-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .order-item-details {
+      flex: 1;
+    }
+    .order-item-details h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 4px 0;
+      color: #111827;
+    }
+    .order-item-details p {
+      font-size: 13px;
+      color: #6b7280;
+      margin: 0;
+    }
+    .order-item-price {
+      font-weight: 700;
+      color: #111827;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      font-size: 14px;
+    }
+    .summary-row.total {
+      border-top: 2px solid #e5e7eb;
+      margin-top: 12px;
+      padding-top: 16px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .summary-row .label {
+      color: #6b7280;
+    }
+    .summary-row .value {
+      font-weight: 600;
+      color: #111827;
+    }
+    .place-order-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.2s;
+    }
+    .place-order-btn:hover {
+      background: #c92a37;
+    }
+    .place-order-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    @media (max-width: 900px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+      .order-summary {
+        position: static;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container wrap">
+      <div class="brand">Groots Technoedge</div>
+      <nav class="nav">
+        <a href="../index.html">Home</a>
+        <a href="collections.html">Collections</a>
+        <a href="women.html">Women</a>
+        <a href="men.html">Men</a>
+        <a href="about.html">About</a>
+        <a href="cart.html" style="position:relative;">
+          Cart
+          <span id="cart-count" style="position:absolute; top:-8px; right:-8px; background:var(--accent); color:#fff; border-radius:50%; width:20px; height:20px; display:none; align-items:center; justify-content:center; font-size:11px; font-weight:700;"></span>
+        </a>
+        <a href="contact.html" class="cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="checkout-container">
+    <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">Checkout</h1>
+    <p class="small" style="margin-bottom: 24px;">Review your order and complete your purchase</p>
+
+    <div class="checkout-layout">
+      <div class="checkout-main">
+        <!-- Shipping Information -->
+        <div class="checkout-section">
+          <h2>Shipping Information</h2>
+          <form id="checkout-form">
+            <div class="form-group">
+              <label for="full-name">Full Name *</label>
+              <input type="text" id="full-name" name="fullName" required placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number *</label>
+              <input type="tel" id="phone" name="phone" required placeholder="+91 9876543210">
+            </div>
+            <div class="form-group">
+              <label for="address">Street Address *</label>
+              <input type="text" id="address" name="address" required placeholder="House/Flat No., Building Name">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city">City *</label>
+                <input type="text" id="city" name="city" required placeholder="City">
+              </div>
+              <div class="form-group">
+                <label for="state">State *</label>
+                <input type="text" id="state" name="state" required placeholder="State">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="pincode">PIN Code *</label>
+                <input type="text" id="pincode" name="pincode" required placeholder="123456" pattern="[0-9]{6}">
+              </div>
+              <div class="form-group">
+                <label for="country">Country *</label>
+                <select id="country" name="country" required>
+                  <option value="India" selected>India</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="checkout-section">
+          <h2>Payment Method</h2>
+          <div class="payment-methods">
+            <div class="payment-option">
+              <input type="radio" id="payment-cod" name="payment" value="cod" checked>
+              <label for="payment-cod">Cash on Delivery (COD)</label>
+            </div>
+            <div class="payment-option">
+              <input type="radio" id="payment-card" name="payment" value="card">
+              <label for="payment-card">Credit/Debit Card</label>
+            </div>
+            <div class="payment-option">
+              <input type="radio" id="payment-upi" name="payment" value="upi">
+              <label for="payment-upi">UPI</label>
+            </div>
+            <div class="payment-option">
+              <input type="radio" id="payment-netbanking" name="payment" value="netbanking">
+              <label for="payment-netbanking">Net Banking</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <div class="checkout-section">
+          <h2>Order Summary</h2>
+          <div id="order-items">
+            <!-- Order items will be populated by JavaScript -->
+          </div>
+          <div class="summary-row">
+            <span class="label">Subtotal</span>
+            <span class="value" id="subtotal">₹0</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Shipping</span>
+            <span class="value" id="shipping">Free</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Tax (GST)</span>
+            <span class="value" id="tax">₹0</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span id="total">₹0</span>
+          </div>
+          <button type="button" class="place-order-btn" id="place-order-btn">Place Order</button>
+          <p class="small" style="text-align: center; margin-top: 12px; color: #6b7280;">
+            By placing this order, you agree to our <a href="terms.html" style="color: var(--primary);">Terms & Conditions</a> and <a href="privacy.html" style="color: var(--primary);">Privacy Policy</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="inner">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="about.html">Our Team</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms & Conditions</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Policies</h3>
+          <ul>
+            <li><a href="refund.html">Refund Policy</a></li>
+            <li><a href="shipping.html">Shipping Policy</a></li>
+            <li><a href="disclaimer.html">Disclaimer Policy</a></li>
+            <li><a href="grievance.html">Grievance Policy</a></li>
+            <li><a href="vendor.html">Seller Policy</a></li>
+            <li><a href="cookie.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Products</h3>
+          <ul>
+            <li><a href="women.html">Women's Apparel</a></li>
+            <li><a href="men.html">Men's Apparel</a></li>
+            <li><a href="collections.html">New Arrivals</a></li>
+            <li><a href="collections.html">Sale Items</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          Copyright © 2025 <strong>Groots Technoedge Pvt. Ltd.</strong> All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Product catalog (same as product.html)
+    // Prices match what's displayed on collections.html
+    const PRODUCTS = {
+      1: { title: 'Womens Boxy Fit Jacket', price: 1400, img: 'womens_Boxy_fit_jacket .webp' },
+      2: { title: "Women's white printed Tshirts", price: 1600, img: 'Tshirts_for_women.jpg' },
+      3: { title: 'Teal tshirt for men', price: 1800, img: 'teal_tshirts_men.webp' },
+      4: { title: 'Standard length womens checked jacket', price: 1600, img: 'Standard _ength_checked_jacket.jpg' },
+      5: { title: 'Oversized tshirts for men', price: 1200, img: 'Oversized_Tshirts_for_men.webp' },
+      6: { title: 'Cargo Jacket for womens', price: 1500, img: 'Cargo jacket lightweight.jpg' },
+      7: { title: 'Back printed women blue tshirt', price: 600, img: 'back printed women blue.webp' },
+      8: { title: 'Vintage mens Baggy jeans', price: 1800, img: 'Vintage men baggy jeans.jpeg' },
+      9: { title: 'Luxury Formal Shirt', price: 1300, img: 'Luxury Formal Shirt.jpg' },
+      10: { title: "Men's Crimson red & midnight black", price: 1200, img: "Men's Crimson red & midnight black.webp" },
+      11: { title: "Men's black and navy blue shirt", price: 1400, img: "Men's black and navy blue shirt.webp" },
+      12: { title: 'Black and white lined shirt', price: 1000, img: 'Black and white lined shirt.webp' },
+      13: { title: 'Sleeveless Hoodie', price: 1500, img: 'Sleeveless_hoodie.jpeg' },
+      14: { title: 'Georgette fit and flare casual gown', price: 800, img: 'Georgette fit and flare casual gown.jpeg' },
+      15: { title: '3 peice set', price: 1000, img: '3 peice set.jpeg' },
+      16: { title: 'Masakali suit set', price: 1100, img: 'Masakali suit set.jpeg' },
+      17: { title: 'Pink skirt set', price: 1200, img: 'Pink skirt set.jpeg' },
+    };
+
+    // Get cart items from localStorage
+    function getCartItems() {
+      const savedCart = localStorage.getItem('groots_cart');
+      if (savedCart) {
+        try {
+          const cart = JSON.parse(savedCart);
+          // Convert cart items to display format
+          return cart.map(item => {
+            const product = PRODUCTS[parseInt(item.id, 10)];
+            if (product) {
+              return {
+                id: item.id,
+                title: product.title,
+                price: product.price,
+                img: product.img,
+                size: item.size,
+                quantity: item.quantity
+              };
+            }
+            return null;
+          }).filter(item => item !== null);
+        } catch (e) {
+          return [];
+        }
+      }
+
+      // If no cart, check URL parameters for backward compatibility
+      const params = new URLSearchParams(window.location.search);
+      const pid = params.get('pid');
+      const size = params.get('size') || 'M';
+      const quantity = parseInt(params.get('qty') || '1', 10);
+
+      if (pid) {
+        const product = PRODUCTS[parseInt(pid, 10)];
+        if (product) {
+          return [{
+            id: pid,
+            title: product.title,
+            price: product.price,
+            img: product.img,
+            size: size,
+            quantity: quantity
+          }];
+        }
+      }
+
+      return [];
+    }
+
+    // Render order items
+    function renderOrderItems() {
+      const items = getCartItems();
+      const container = document.getElementById('order-items');
+      let subtotal = 0;
+
+      if (items.length === 0) {
+        container.innerHTML = '<p class="small" style="color: #6b7280; text-align: center; padding: 20px;">No items in cart. <a href="cart.html" style="color: var(--primary);">Go to cart</a></p>';
+        document.getElementById('place-order-btn').disabled = true;
+        updateTotals(0);
+        return;
+      }
+
+      container.innerHTML = items.map(item => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        return `
+          <div class="order-item">
+            <img src="./${item.img}" alt="${item.title}">
+            <div class="order-item-details">
+              <h4>${item.title}</h4>
+              <p>Size: ${item.size} | Qty: ${item.quantity}</p>
+            </div>
+            <div class="order-item-price">₹${itemTotal}</div>
+          </div>
+        `;
+      }).join('');
+
+      updateTotals(subtotal);
+    }
+
+    // Update totals
+    function updateTotals(subtotal) {
+      const shipping = subtotal >= 999 ? 0 : 99;
+      const tax = Math.round(subtotal * 0.18); // 18% GST
+      const total = subtotal + shipping + tax;
+
+      document.getElementById('subtotal').textContent = `₹${subtotal}`;
+      document.getElementById('shipping').textContent = shipping === 0 ? 'Free' : `₹${shipping}`;
+      document.getElementById('tax').textContent = `₹${tax}`;
+      document.getElementById('total').textContent = `₹${total}`;
+    }
+
+    // Handle place order
+    document.getElementById('place-order-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+      const items = getCartItems();
+      
+      if (items.length === 0) {
+        alert('Your cart is empty! Please add items to your cart first.');
+        window.location.href = 'cart.html';
+        return;
+      }
+      
+      const form = document.getElementById('checkout-form');
+      
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      const formData = new FormData(form);
+      const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+      
+      // Show success message (in a real app, this would submit to a server)
+      alert('Order placed successfully! Your order confirmation will be sent to your email.');
+      
+      // Clear cart
+      localStorage.removeItem('groots_cart');
+      
+      // Redirect to home
+      window.location.href = '../index.html';
+    });
+
+    // Update cart count in header
+    function updateCartCount() {
+      const cart = localStorage.getItem('groots_cart');
+      const count = cart ? JSON.parse(cart).reduce((sum, item) => sum + item.quantity, 0) : 0;
+      const cartCountEl = document.getElementById('cart-count');
+      if (cartCountEl) {
+        if (count > 0) {
+          cartCountEl.textContent = count;
+          cartCountEl.style.display = 'flex';
+        } else {
+          cartCountEl.style.display = 'none';
+        }
+      }
+    }
+
+    // Initialize on page load
+    renderOrderItems();
+    updateCartCount();
+  </script>
+</body>
+</html>
+
